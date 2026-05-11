@@ -1,0 +1,51 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import StudentCard from "../components/StudentCard.astro";
+import data from "../data/data.json";
+
+// data object
+const { students } = data;
+// variables
+const title = "EWU Design Seniors";
+const tapeSources = [
+  "/images/tape/blktape2.png",
+  "/images/tape/blktape3.png",
+  "/images/tape/redtape1.png",
+  "/images/tape/redtape2.png",
+  "/images/tape/redtape3.png",
+  "/images/tape/whttape1.png",
+  "/images/tape/whttape2.png",
+  "/images/tape/whttape3.png",
+];
+const sortedStudents = [...students].sort((first, second) => {
+  const firstLast = first.name.split(" ").slice(-1)[0] || "";
+  const secondLast = second.name.split(" ").slice(-1)[0] || "";
+  return firstLast.localeCompare(secondLast, "en", { sensitivity: "base" });
+});
+---
+
+<BaseLayout title={title}>
+  <img class="ewu-logo" src="https://cdn.ewu.edu/wp-content/themes/ewu-2018/assets/eagle.svg" alt="EWU Eagle logo" />
+  <header class="hero">
+    <div class="hero-accent" aria-hidden="true"></div>
+    <div>
+      <p class="hero-kicker">EWU Senior Poster Wall</p>
+      <h1>{title}</h1>
+
+    </div>
+  </header>
+
+  <main class="poster-wall" aria-label="Student poster wall">
+
+    {sortedStudents.map((student, index) => (
+      <StudentCard
+        {...student}
+        tapeLeft={tapeSources[index % tapeSources.length]}
+        tapeRight={tapeSources[(index + 3) % tapeSources.length]}
+      />
+    ))}
+  
+  </main>
+
+</BaseLayout>
+
