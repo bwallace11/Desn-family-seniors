@@ -14,10 +14,34 @@ const { title } = Astro.props;
     <title>{title}</title>
 
   </head>
-  <body>
+  <body class="page">
     
     <!-- dynamically insert content -->
     <slot />
+
+    <script is:inline>
+      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (!prefersReduced) {
+        document.addEventListener("click", (event) => {
+          if (event.defaultPrevented || event.button !== 0) return;
+          const link = event.target.closest("a");
+          if (!link) return;
+          if (link.target && link.target !== "_self") return;
+          if (link.hasAttribute("data-no-transition")) return;
+
+          const url = new URL(link.href, window.location.href);
+          if (url.origin !== window.location.origin) return;
+          if (url.pathname === window.location.pathname && url.hash) return;
+
+          event.preventDefault();
+          document.body.classList.add("page-exit");
+          window.setTimeout(() => {
+            window.location.href = url.href;
+          }, 180);
+        });
+      }
+    </script>
   
   </body>
 </html>

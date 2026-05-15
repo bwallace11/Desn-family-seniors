@@ -2,6 +2,7 @@
 const {
   name,
   image,
+  favorite_emoji,
   github_permalink,
   github_profile,
   codepen_profile,
@@ -9,15 +10,18 @@ const {
   tapeRight,
 } = Astro.props;
 const hasLinks = github_permalink || github_profile || codepen_profile;
+const slug = name.toLowerCase().replace(/\s+/g, "-");
 ---
 
 <figure
   class="poster"
   style={`--tape-left: url('${tapeLeft}'); --tape-right: url('${tapeRight}');`}
 >
+  <a class="poster-hit" href={`/${slug}`} aria-label={`View ${name} portfolio`}></a>
   <img class="poster-image" src={image} alt={name} loading="lazy" />
   <figcaption class="poster-body">
     <div class="poster-header">
+      <span class="poster-emoji" aria-hidden="true">{favorite_emoji}</span>
       <h2 class="poster-name">{name}</h2>
     </div>
     {hasLinks && (
@@ -73,6 +77,18 @@ const hasLinks = github_permalink || github_profile || codepen_profile;
     transform: rotate(8deg);
   }
 
+  .poster-hit {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: block;
+  }
+
+  .poster-hit:focus-visible {
+    outline: 3px solid var(--ewu-red);
+    outline-offset: 6px;
+  }
+
   .poster:hover,
   .poster:focus-within {
     transform: translateY(-4px);
@@ -80,6 +96,8 @@ const hasLinks = github_permalink || github_profile || codepen_profile;
   }
 
   .poster-image {
+    position: relative;
+    z-index: 1;
     width: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
@@ -88,6 +106,8 @@ const hasLinks = github_permalink || github_profile || codepen_profile;
   }
 
   .poster-body {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
@@ -99,6 +119,11 @@ const hasLinks = github_permalink || github_profile || codepen_profile;
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 0.45rem;
+  }
+
+  .poster-emoji {
+    font-size: 1.3rem;
   }
 
   .poster-name {
@@ -116,6 +141,8 @@ const hasLinks = github_permalink || github_profile || codepen_profile;
   }
 
   .poster-links {
+    position: relative;
+    z-index: 3;
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
