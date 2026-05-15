@@ -15,9 +15,12 @@ const slug = name.toLowerCase().replace(/\s+/g, "-");
 
 <figure
   class="poster"
+  role="link"
+  tabindex="0"
+  aria-label={`View ${name} portfolio`}
+  data-href={`/${slug}`}
   style={`--tape-left: url('${tapeLeft}'); --tape-right: url('${tapeRight}');`}
 >
-  <a class="poster-hit" href={`/${slug}`} aria-label={`View ${name} portfolio`}></a>
   <img class="poster-image" src={image} alt={name} loading="lazy" />
   <figcaption class="poster-body">
     <div class="poster-header">
@@ -48,6 +51,7 @@ const slug = name.toLowerCase().replace(/\s+/g, "-");
     box-shadow: 0 10px 18px rgba(0, 0, 0, 0.18), 0 0 16px rgba(183, 20, 46, 0.55);
     transition: transform 180ms ease, box-shadow 180ms ease;
     overflow: visible;
+    cursor: pointer;
   }
 
   .poster::before,
@@ -75,18 +79,6 @@ const slug = name.toLowerCase().replace(/\s+/g, "-");
     right: -0.2rem;
     background-image: var(--tape-right);
     transform: rotate(8deg);
-  }
-
-  .poster-hit {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    display: block;
-  }
-
-  .poster-hit:focus-visible {
-    outline: 3px solid var(--ewu-red);
-    outline-offset: 6px;
   }
 
   .poster:hover,
@@ -144,9 +136,10 @@ const slug = name.toLowerCase().replace(/\s+/g, "-");
     position: relative;
     z-index: 3;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 0.5rem;
     margin-top: 0.4rem;
+    justify-content: center;
   }
 
   .poster-links a {
@@ -154,11 +147,19 @@ const slug = name.toLowerCase().replace(/\s+/g, "-");
     border: 1px solid var(--black);
     color: var(--black);
     text-decoration: none;
-    padding: 0.35rem 0.6rem;
-    font-size: 0.75rem;
+    padding: 0.45rem 0.65rem;
+    font-size: 0.78rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     transition: transform 150ms ease, background 150ms ease, color 150ms ease;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 560px) {
+    .poster-links {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
   }
 
   .poster-links a:hover,

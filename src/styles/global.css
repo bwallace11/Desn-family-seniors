@@ -4,6 +4,7 @@
   --ewu-red: #b7142e;
   --black: #000000;
   --white: #ffffff;
+  --charcoal: #1f1f1f;
   --paper: #f3f1ed;
   --tape: #d9d9d9;
   --display-font: "Playfair Display", serif;
@@ -18,7 +19,12 @@
 
 body {
   padding: clamp(1.5rem, 3vw, 3rem);
-  background: var(--black);
+  background-color: var(--charcoal);
+  background-image: url("/images/texture/crumpledTexture.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: repeat;
+  background-blend-mode: multiply;
   color: var(--white);
   font-family: var(--body-font);
 }

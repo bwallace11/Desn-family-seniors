@@ -22,25 +22,48 @@ const { title } = Astro.props;
     <script is:inline>
       const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      if (!prefersReduced) {
-        document.addEventListener("click", (event) => {
-          if (event.defaultPrevented || event.button !== 0) return;
-          const link = event.target.closest("a");
-          if (!link) return;
-          if (link.target && link.target !== "_self") return;
-          if (link.hasAttribute("data-no-transition")) return;
+      const navigateTo = (url) => {
+        if (prefersReduced) {
+          window.location.href = url;
+          return;
+        }
 
-          const url = new URL(link.href, window.location.href);
-          if (url.origin !== window.location.origin) return;
-          if (url.pathname === window.location.pathname && url.hash) return;
+        document.body.classList.add("page-exit");
+        window.setTimeout(() => {
+          window.location.href = url;
+        }, 180);
+      };
 
-          event.preventDefault();
-          document.body.classList.add("page-exit");
-          window.setTimeout(() => {
-            window.location.href = url.href;
-          }, 180);
-        });
-      }
+      document.addEventListener("click", (event) => {
+        if (event.defaultPrevented || event.button !== 0) return;
+
+        const card = event.target.closest(".poster[data-href]");
+        if (card && !event.target.closest("a")) {
+          navigateTo(card.dataset.href);
+          return;
+        }
+
+        const link = event.target.closest("a");
+        if (!link) return;
+        if (link.target && link.target !== "_self") return;
+        if (link.hasAttribute("data-no-transition")) return;
+
+        const url = new URL(link.href, window.location.href);
+        if (url.origin !== window.location.origin) return;
+        if (url.pathname === window.location.pathname && url.hash) return;
+
+        event.preventDefault();
+        navigateTo(url.href);
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        const card = event.target.closest(".poster[data-href]");
+        if (!card) return;
+
+        event.preventDefault();
+        navigateTo(card.dataset.href);
+      });
     </script>
   
   </body>

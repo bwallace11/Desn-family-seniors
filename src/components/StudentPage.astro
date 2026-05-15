@@ -13,10 +13,7 @@ const tapeSources = [
 const tapeIndex = name.length % tapeSources.length;
 const tapeLeft = tapeSources[tapeIndex];
 const tapeRight = tapeSources[(tapeIndex + 3) % tapeSources.length];
-const paperSources = [
-  "/images/paper/tornPaper1.png",
-  "/images/paper/tornPaper2.png",
-];
+const paperSources = ["/images/paper/tornPaper1.png"];
 const edgeClips = [
   "polygon(1% 2%, 98% 0%, 99% 9%, 97% 18%, 99% 26%, 98% 36%, 99% 47%, 97% 57%, 98% 66%, 99% 77%, 97% 88%, 99% 98%, 2% 99%, 0% 88%, 1% 78%, 0% 68%, 2% 58%, 1% 48%, 2% 36%, 1% 26%, 2% 16%)",
   "polygon(2% 1%, 97% 2%, 99% 12%, 97% 22%, 98% 32%, 96% 42%, 98% 52%, 96% 62%, 98% 72%, 96% 82%, 98% 92%, 97% 99%, 4% 98%, 1% 92%, 2% 82%, 0% 72%, 2% 62%, 1% 52%, 2% 42%, 1% 32%, 2% 22%)",
@@ -28,9 +25,6 @@ const hash = [...name].reduce(
   0,
 );
 const paperPrimary = paperSources[hash % paperSources.length];
-const paperAlt = paperSources[(hash + 1) % paperSources.length];
-const isPrimaryLarge = paperPrimary.includes("tornPaper2");
-const isAltLarge = paperAlt.includes("tornPaper2");
 const edgeClip = edgeClips[hash % edgeClips.length];
 ---
 
@@ -46,7 +40,7 @@ const edgeClip = edgeClips[hash % edgeClips.length];
   </figure>
   <div
     class="student-bio-panel"
-    style={`--bio-paper: url('${paperPrimary}'); --bio-paper-alt: url('${paperAlt}'); --bio-paper-size: ${isPrimaryLarge ? "140% 140%" : "120% 120%"}; --bio-paper-alt-size: ${isAltLarge ? "140% 140%" : "120% 120%"};`}
+    style={`--bio-paper: url('${paperPrimary}'); --bio-paper-size: 120% 120%;`}
     aria-label={`${name} bio`}
   >
     <div class="student-bio-header">
@@ -271,8 +265,6 @@ const edgeClip = edgeClips[hash % edgeClips.length];
     .student-bio-panel {
       min-height: 360px;
       margin-left: 0;
-      --bio-paper: var(--bio-paper-alt);
-      --bio-paper-size: var(--bio-paper-alt-size);
     }
 
     .student-back {
